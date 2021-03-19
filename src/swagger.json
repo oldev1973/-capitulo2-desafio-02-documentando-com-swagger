@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "User Registration System Documentation",
+    "description": "This is a simple API for registering and list users",
+    "version": "1.0.0",
+    "contact": {
+      "email": "contact@dev.com"
+    }
+  },
+  "paths":{
+    "/users": {
+      "post":{
+        "tags":["User"],
+        "summary": "Create a new user",
+        "description": "Create a new user if the email entered does not exist",
+        "requestBody": {
+          "content": {
+            "application/json":{
+              "schema":{
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string"
+                  }
+                },
+                "example": {
+                  "name": "User Name sample",
+                  "email": "sample@user.com"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "User created successfully"
+          },
+          "400":{
+            "description": "User email already exists"
+          }
+        }
+      },
+      "get":{
+        "tags":["User"],
+        "summary": "List all users",
+        "description": "List all users only if the requesting user is admin",
+        "parameters":[{
+          "name": "user_id",
+          "in": "header",
+          "description": "Id of the user making the request",
+          "required": true
+        }],
+        "responses": {
+          "200": {
+            "description": "Success - List all users",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type":"object",
+                    "properties": {
+                      "id": {
+                        "type":"string"
+                      },
+                      "admin":{
+                        "type": "boolean"
+                      },
+                      "name": {
+                        "type":"string"
+                      },
+                      "email": {
+                        "type":"string"
+                      },
+                      "created_at": {
+                        "type":"Date"
+                      },
+                      "updated_at": {
+                        "type":"Date"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+            
+          },
+          "400":{
+            "description": "User not found or not admin"
+          }
+        }
+      }
+    },
+    "/users/{user_id}":{
+      "get":{
+        "tags":["User"],
+        "summary": "Get an user by id",
+        "description": "Get an user informing the user id",
+        "parameters":[{
+          "name": "user_id",
+          "in": "path",
+          "description": "Id of user to find",
+          "required": true
+        }],
+        "responses": {
+          "200": {
+            "description": "Success - User found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "id": {
+                      "type":"string"
+                    },
+                    "admin":{
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type":"string"
+                    },
+                    "email": {
+                      "type":"string"
+                    },
+                    "created_at": {
+                      "type":"Date"
+                    },
+                    "updated_at": {
+                      "type":"Date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "User not found"
+          }
+        }
+      }
+    },
+    "/users/{user_id}/admin":{
+      "patch":{
+        "tags":["User"],
+        "summary": "Turn an user in admin",
+        "description": "Get an user informing the user id and turn it in admin",
+        "parameters":[{
+          "name": "user_id",
+          "in": "path",
+          "description": "Id of user to turn in admin",
+          "required": true
+        }],
+        "responses": {
+          "200": {
+            "description": "Success - User found and turned in admin",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type":"object",
+                  "properties": {
+                    "id": {
+                      "type":"string"
+                    },
+                    "admin":{
+                      "type": "boolean"
+                    },
+                    "name": {
+                      "type":"string"
+                    },
+                    "email": {
+                      "type":"string"
+                    },
+                    "created_at": {
+                      "type":"Date"
+                    },
+                    "updated_at": {
+                      "type":"Date"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404":{
+            "description": "User not found"
+          }
+        }
+      }
+    }
+  }
+}
